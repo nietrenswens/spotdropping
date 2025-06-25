@@ -17,12 +17,12 @@
     "noImplicitAny": true,
     "strictBindCallApply": true,
     "paths": {
-      "@dto": [
+      "@spotdropping/api/dto": [
         "./src/dto/index"
       ],
-      "@dto/*": [
-        "./src/dto/*"
-      ],
+      "@spotdropping/api/auth": [
+        "./src/auth/index"
+      ]
     }
   }
 }

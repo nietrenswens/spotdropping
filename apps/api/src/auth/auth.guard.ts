@@ -1,4 +1,4 @@
-import { UserDTO } from '@dto';
+import { UserDTO } from '@spotdropping/api/dto';
 import {
     CanActivate,
     ExecutionContext,
@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthenticatedRequest } from './types';
+import { Request } from 'express';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -33,7 +34,7 @@ export class AuthGuard implements CanActivate {
 
     private extractTokenFromHeader(request: Request): string | undefined {
         const [type, token] =
-            request.headers.get('authorization')?.split(' ') || [];
+            request.headers['authorization']?.split(' ') || [];
         return type === 'Bearer' ? token : undefined;
     }
 }
