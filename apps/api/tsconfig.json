@@ -16,6 +16,13 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": true,
     "strictBindCallApply": true,
-    "noFallthroughCasesInSwitch": true
+    "paths": {
+      "@dto": [
+        "./src/dto/index"
+      ],
+      "@dto/*": [
+        "./src/dto/*"
+      ],
+    }
   }
 }

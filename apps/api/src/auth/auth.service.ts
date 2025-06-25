@@ -1,14 +1,21 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { User } from 'generated/prisma';
 import { PrismaService } from '../prisma.service';
-import { UserDTO } from 'src/dto/user/userDTO';
+import { UserDTO } from '@dto';
+import { User } from 'generated/prisma';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-    public constructor(private readonly prisma: PrismaService) { }
-    
-    public async signIn(email: string, password: string): Promise<UserDTO> {
-        const user: User = await this.prisma.user.findUnique({
+    public constructor(
+        private readonly prismaService: PrismaService,
+        private readonly jwtService: JwtService,
+    ) {}
+
+    public async signIn(
+        email: string,
+        password: string,
+    ): Promise<{ token: string }> {
+        const user: User | null = await this.prismaService.user.findUnique({
             where: { email },
         });
 
@@ -16,12 +23,15 @@ export class AuthService {
             throw new UnauthorizedException();
         }
 
-        // Here you would typically compare the password with a hashed version
-        // For simplicity, we are assuming the password is correct
+        // TODO: Use hashing
         if (user.password !== password) {
             throw new UnauthorizedException();
         }
 
-        return user; // Return user data or a token
+        const payload: UserDTO = user as UserDTO;
+
+        return {
+            token: await this.jwtService.signAsync(payload),
+        };
     }
 }
