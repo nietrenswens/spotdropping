@@ -1,0 +1,12 @@
+GET http://localhost:3000/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGVtYWlsLmNvbSIsInN1YiI6InVzZXIxIiwiaWF0IjoxNzYyODYyOTExLCJleHAiOjE3NjI4NzAxMTF9.Ii8prDJrqBeXEx3tgZxccWgYMXqR1O1H_hDfcQTQ6o4
+
+###
+
+Post http://localhost:3000/auth/login
+content-type: application/json
+
+{
+    "email": "user1@email.com",
+    "password": "password"
+}
