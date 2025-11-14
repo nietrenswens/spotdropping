@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
 import { UsersService } from 'src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
-import { User } from 'src/users/users.service';
+import { User } from 'src/users/user.entity';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -12,8 +12,7 @@ describe('AuthService', () => {
   const mockUser: User = {
     id: '1',
     email: 'test@example.com',
-    password: 'password123',
-    dateOfBirth: new Date('10-10-2020'),
+    passwordHash: 'password123',
   };
 
   beforeEach(async () => {
@@ -51,19 +50,19 @@ describe('AuthService', () => {
 
       expect(usersService.findOne).toHaveBeenCalledWith('test@example.com');
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { password, ...mockExpected } = mockUser;
+      const { passwordHash, ...mockExpected } = mockUser;
       expect(result).toEqual(mockExpected);
     });
 
     it('should return undefined if user not found', async () => {
-      usersService.findOne.mockResolvedValue(undefined);
+      usersService.findOne.mockResolvedValue(null);
 
       const result = await authService.validateUser(
         'unknown@example.com',
         'password123',
       );
 
-      expect(result).toBeUndefined();
+      expect(result).toBeNull();
     });
 
     it('should return undefined if password is incorrect', async () => {
