@@ -4,9 +4,11 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { dataSourceOptions } from './infrastructure/datasource';
 
 @Module({
-  imports: [AuthModule, UsersModule],
+  imports: [AuthModule, UsersModule, TypeOrmModule.forRoot(dataSourceOptions)],
   controllers: [AppController],
   providers: [
     {

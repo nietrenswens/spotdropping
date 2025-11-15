@@ -1,7 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { User, UsersService } from 'src/users/users.service';
+import { UsersService } from 'src/users/users.service';
 import { JwtPayload } from './types';
+import { User } from 'src/users/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -13,12 +14,12 @@ export class AuthService {
   public async validateUser(
     email: string,
     password: string,
-  ): Promise<Omit<User, 'password'> | undefined> {
+  ): Promise<Omit<User, 'passwordHash'> | undefined> {
     const user = await this.usersService.findOne(email);
 
-    if (user && user.password === password) {
+    if (user && user.passwordHash === password) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { password, ...result } = user;
+      const { passwordHash, ...result } = user;
       return result;
     }
 

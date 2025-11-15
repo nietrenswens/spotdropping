@@ -1,5 +1,5 @@
 import { Request as ExpressRequest } from 'express';
-import { User } from 'src/users/users.service';
+import { User } from 'src/users/user.entity';
 
 export interface AuthenticatedRequest extends ExpressRequest {
   user: User;
