@@ -2,7 +2,7 @@
 erDiagram
 User {
     uuid id PK
-    string email
+    string email UNIQUE
     string passwordHash
     timestamp createdAt
 }
@@ -23,15 +23,41 @@ Waypoint {
     decimal latitude
 }
 
-Game {
+Checkpoint {
     uuid id PK
-    string status
-    timestamp createdAt
-    timestamp startTime
-    timestamp endTime
+    uuid gameId FK
+    string name
+    decimal reward
+    decimal longitude
+    decimal latitude
 }
 
-User ||--|| Player : "plays as"
+CheckpointVisit {
+    uuid id PK
+    uuid checkpointId FK
+    uuid playerId FK
+    timestamp visitedAt
+    string photoUrl "nullable"
+}
+
+Game {
+    uuid id PK
+    string status "waiting|in_progress|finished"
+    int maxPlayers
+    timestamp createdAt
+    timestamp startTime "nullable"
+    timestamp endTime "nullable"
+}
+
+User ||--o{ Player : "plays as"
 Game ||--o{ Player : "has"
-Player ||--o{ Waypoint : "visits"
+Game ||--o{ Checkpoint : "defines"
+Player ||--o{ Waypoint : "tracks"
+Player ||--o{ CheckpointVisit : "visits"
+Checkpoint ||--o{ CheckpointVisit : "visited by"
 ```
+
+**Unique Constraints:**
+
+- `User.email` - unique across all users
+- `CheckpointVisit (playerId, checkpointId)` - player can only visit each checkpoint once
